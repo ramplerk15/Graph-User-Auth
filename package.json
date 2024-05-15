@@ -1,0 +1,19 @@
+{
+  "name": "graph-user-auth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "auth-test123"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ramplerk15/Graph-User-Auth.git"
+  },
+  "author": "kerstin rampler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ramplerk15/Graph-User-Auth/issues"
+  },
+  "homepage": "https://github.com/ramplerk15/Graph-User-Auth#readme",
+  "description": ""
+}
