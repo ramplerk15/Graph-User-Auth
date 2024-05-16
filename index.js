@@ -100,12 +100,16 @@ function initializeGraph(settings) {
       const messagePage = await graphHelper.getInboxAsync();
       const messages = messagePage.value;
   
+      console.log(`NUMBER OF MESSAGES IN INBOX: ${messages.length}`)
+      console.log(" ");
+
       // Output each message's details
       for (const message of messages) {
-        console.log(`Message: ${message.subject ?? 'NO SUBJECT'}`);
+        console.log(`[${messages.indexOf(message)}] Message: ${message.subject ?? 'NO SUBJECT'}`);
         console.log(`  From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
         console.log(`  Status: ${message.isRead ? 'Read' : 'Unread'}`);
         console.log(`  Received: ${message.receivedDateTime}`);
+        console.log(" ");
       }
   
       // If @odata.nextLink is not undefined, there are more messages
@@ -122,34 +126,28 @@ function initializeGraph(settings) {
         const messagePage = await graphHelper.getInboxAsync();
         const messages = messagePage.value;
        
-        // Output each message's details
-        for (i in messages) {
-         const message = messages[i];
-    
-        console.log(`Message: ${message.subject ?? 'NO SUBJECT'}`);
-        console.log(`  From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
-        console.log(`  Status: ${message.isRead ? 'Read' : 'Unread'}`);
-        console.log(`  Received: ${message.receivedDateTime}`);
-        console.log(`  ID: ${message.id ?? 'ID not found'}`);
-        console.log(`  i: ${i ?? 'no count'}`);
+        console.log(`NUMBER OF MESSAGES IN INBOX: ${messages.length}`);
+        console.log(" ");
 
+        // Output each message's details
+        for (const message of messages) {
+          console.log(`[${messages.indexOf(message)}] Message: ${message.subject ?? 'NO SUBJECT'}`);
+          console.log(`     From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
+          console.log(`     Status: ${message.isRead ? 'Read' : 'Unread'}`);
+          console.log(`     Received: ${message.receivedDateTime}`);
+          console.log(`     ID: ${message.id ?? 'ID not found'}`);
+          console.log(" ");
         }
         
+        let count = -1;
         count = readline.question('Enter count to delete mail:', count =>{
-            const mailToDelete = messages[count]
-            console.log(`Delete mail: ${mailToDelete.subject}`);
-            console.log(`  From: ${mailToDelete.from?.emailAddress?.name ?? 'UNKNOWN'}`);
-            console.log(`  Status: ${mailToDelete.isRead ? 'Read' : 'Unread'}`);
-            console.log(`  Received: ${mailToDelete.receivedDateTime}`);
             readline.close();
-
-            
         })
-        console.log(`mailID: ${count -  messages[count].id}`);
-          await graphHelper.deleteMailAsync(messages[count].id);
-        
 
-        
+        console.log(`delete message - id:  ${messages[count].id}`);
+        console.log(`delete message - subject:  ${messages[count].subject}`);
+        await graphHelper.deleteMailAsync(messages[count].id);
+                    
         // If @odata.nextLink is not undefined, there are more messages
         // available on the server
         const moreAvailable = messagePage['@odata.nextLink'] != undefined;
@@ -192,12 +190,15 @@ function initializeGraph(settings) {
       const eventsPage = await graphHelper.listEventsAsync();
       const events = eventsPage.value;
   
+      console.log(`NUMBER OF EVENTS IN CALENDAR: ${events.length}`)
+      console.log(" ");
       // Output each message's details
       for (const event of events) {
-        console.log(`Message: ${event.subject ?? 'NO SUBJECT'}`);
+        console.log(`[${events.indexOf(event)}] Event: ${event.subject ?? 'NO SUBJECT'}`);
         console.log(`  Start: ${event.start.dateTime ?? 'UNKNOWN'}`);
         console.log(`  End: ${event.end.dateTime ?? 'UNKNOWN'}`);
         console.log(`  Location: ${event.location.displayName ?? 'UNKNOWN'}`);
+        console.log(" ");
       }
   
       // If @odata.nextLink is not undefined, there are more messages

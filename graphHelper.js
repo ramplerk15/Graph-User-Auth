@@ -38,7 +38,7 @@ async function getUserTokenAsync() {
     if (!_deviceCodeCredential) {
       throw new Error('Graph has not been initialized for user auth');
     }
-  
+
     // Ensure scopes isn't undefined
     if (!_settings?.graphUserScopes) {
       throw new Error('Setting "scopes" cannot be undefined');
@@ -103,7 +103,7 @@ async function getUserTokenAsync() {
       ]
     };
   
-    console.log(`Message: ${message.toString()}`);
+  
     // Send the message
     return _userClient.api('me/sendMail')
       .post({
@@ -162,6 +162,8 @@ async function getUserTokenAsync() {
     .get();
   }
   module.exports.listEventsAsync = listEventsAsync;
+
+  
   // This function serves as a playground for testing Graph snippets
 // or other code
 async function makeGraphCallAsync() {
