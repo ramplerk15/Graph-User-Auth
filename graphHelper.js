@@ -78,8 +78,6 @@ async function getUserTokenAsync() {
   module.exports.getInboxAsync = getInboxAsync;
 
   async function sendMailAsync(subject, body, recipient) {
-    body = 'Juhuuu!!! Es funktioniert :)'
-    subject = 'NEW graph auth test'
     console.log(`Subject: ${subject}`)
     console.log(`Body: ${body}`)
     console.log(`Recipient: ${recipient}`)
@@ -121,6 +119,49 @@ async function getUserTokenAsync() {
   }
   module.exports.deleteMailAsync = deleteMailAsync;
 
+  async function createEventAsync() {
+    const event = {
+      subject: 'Let\'s go for lunch',
+      body: {
+        contentType: 'HTML',
+        content: 'Does noon work for you?'
+      },
+      start: {
+          dateTime: '2017-04-15T12:00:00',
+          timeZone: 'Pacific Standard Time'
+      },
+      end: {
+          dateTime: '2017-04-15T14:00:00',
+          timeZone: 'Pacific Standard Time'
+      },
+      location: {
+          displayName: 'Harry\'s Bar'
+      },
+      attendees: [
+        {
+          emailAddress: {
+            address: 'samanthab@contoso.com',
+            name: 'Samantha Booth'
+          },
+          type: 'required'
+        }
+      ],
+      allowNewTimeProposals: true,
+      transactionId: '7E163156-7762-4BEB-A1C6-729EA81755A7'
+    };
+    console.log(`Create Event: ${event.subject}`)
+    return _userClient.api('me/events').post(event);
+  }
+  module.exports.createEventAsync = createEventAsync;
+
+  async function listEventsAsync() {
+    console.log('Getting events...');
+    return _userClient.api('/me/events')
+    .header('Prefer','outlook.timezone="Pacific Standard Time"')
+    .select('subject,body,bodyPreview,organizer,attendees,start,end,location')
+    .get();
+  }
+  module.exports.listEventsAsync = listEventsAsync;
   // This function serves as a playground for testing Graph snippets
 // or other code
 async function makeGraphCallAsync() {

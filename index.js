@@ -19,7 +19,8 @@ async function main() {
     'List my inbox',
     'Send mail',
     'Delete mail',
-    'Make a Graph call'
+    'List events',
+    'Create event'
   ];
 
   while (choice != -1) {
@@ -48,8 +49,12 @@ async function main() {
         break;
       case 4:
         // Run any Graph code
-        await makeGraphCallAsync();
+        await listEventsAsync();
         break;
+      case 5:
+          // Run any Graph code
+          await createEventAsync();
+          break;
       default:
         console.log('Invalid choice! Please try again.');
     }
@@ -174,6 +179,36 @@ function initializeGraph(settings) {
     }
   }
   
+  async function createEventAsync() {
+    try {
+      await graphHelper.createEventAsync();
+    } catch (err) {
+      console.log(`Error creating Event: ${err}`);
+    }
+  }
+
+  async function listEventsAsync() {
+    try {
+      const eventsPage = await graphHelper.listEventsAsync();
+      const events = eventsPage.value;
+  
+      // Output each message's details
+      for (const event of events) {
+        console.log(`Message: ${event.subject ?? 'NO SUBJECT'}`);
+        console.log(`  Start: ${event.start.dateTime ?? 'UNKNOWN'}`);
+        console.log(`  End: ${event.end.dateTime ?? 'UNKNOWN'}`);
+        console.log(`  Location: ${event.location.displayName ?? 'UNKNOWN'}`);
+      }
+  
+      // If @odata.nextLink is not undefined, there are more messages
+      // available on the server
+      const moreAvailable = eventsPage['@odata.nextLink'] != undefined;
+      console.log(`\nMore events available? ${moreAvailable}`);
+    } catch (err) {
+      console.log(`Error getting events: ${err}`);
+    }
+  }
+
   async function makeGraphCallAsync() {
     try {
       await graphHelper.makeGraphCallAsync();

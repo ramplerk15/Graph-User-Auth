@@ -5,7 +5,9 @@ const settings = {
       'user.read',
       'mail.readwrite',
       'mail.send',
-    
+      'calendars.readbasic',
+      'calendars.read',
+      'calendars.readwrite'
     ]
   };
   
