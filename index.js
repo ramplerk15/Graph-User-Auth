@@ -116,24 +116,35 @@ function initializeGraph(settings) {
     try {
         const messagePage = await graphHelper.getInboxAsync();
         const messages = messagePage.value;
-        const message = messages[0];
-    
+       
         // Output each message's details
-        //for (const message of messages) {
-             
+        for (i in messages) {
+         const message = messages[i];
+    
         console.log(`Message: ${message.subject ?? 'NO SUBJECT'}`);
         console.log(`  From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
         console.log(`  Status: ${message.isRead ? 'Read' : 'Unread'}`);
         console.log(`  Received: ${message.receivedDateTime}`);
         console.log(`  ID: ${message.id ?? 'ID not found'}`);
+        console.log(`  i: ${i ?? 'no count'}`);
+
+        }
         
-          console.log('Deleting...');
-          await graphHelper.deleteMailAsync(messages[0].id)
+        count = readline.question('Enter count to delete mail:', count =>{
+            const mailToDelete = messages[count]
+            console.log(`Delete mail: ${mailToDelete.subject}`);
+            console.log(`  From: ${mailToDelete.from?.emailAddress?.name ?? 'UNKNOWN'}`);
+            console.log(`  Status: ${mailToDelete.isRead ? 'Read' : 'Unread'}`);
+            console.log(`  Received: ${mailToDelete.receivedDateTime}`);
+            readline.close();
+
+            
+        })
+        console.log(`mailID: ${count -  messages[count].id}`);
+          await graphHelper.deleteMailAsync(messages[count].id);
         
 
-    
         
-  
         // If @odata.nextLink is not undefined, there are more messages
         // available on the server
         const moreAvailable = messagePage['@odata.nextLink'] != undefined;
