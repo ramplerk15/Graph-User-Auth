@@ -3,8 +3,9 @@ const settings = {
     'tenantId': 'c5f0fc93-918e-4456-8a03-a1e68cb4b38c',
     'graphUserScopes': [
       'user.read',
-      'mail.read',
-      'mail.send'
+      'mail.readwrite',
+      'mail.send',
+    
     ]
   };
   

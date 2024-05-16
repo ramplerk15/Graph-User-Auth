@@ -18,6 +18,7 @@ async function main() {
     'Display access token',
     'List my inbox',
     'Send mail',
+    'Delete mail',
     'Make a Graph call'
   ];
 
@@ -42,6 +43,10 @@ async function main() {
         await sendMailAsync();
         break;
       case 3:
+        // Delete an email message
+        await deleteMailAsync();
+        break;
+      case 4:
         // Run any Graph code
         await makeGraphCallAsync();
         break;
@@ -105,6 +110,37 @@ function initializeGraph(settings) {
     } catch (err) {
       console.log(`Error getting user's inbox: ${err}`);
     }
+  }
+
+  async function deleteMailAsync(){
+    try {
+        const messagePage = await graphHelper.getInboxAsync();
+        const messages = messagePage.value;
+        const message = messages[0];
+    
+        // Output each message's details
+        //for (const message of messages) {
+             
+        console.log(`Message: ${message.subject ?? 'NO SUBJECT'}`);
+        console.log(`  From: ${message.from?.emailAddress?.name ?? 'UNKNOWN'}`);
+        console.log(`  Status: ${message.isRead ? 'Read' : 'Unread'}`);
+        console.log(`  Received: ${message.receivedDateTime}`);
+        console.log(`  ID: ${message.id ?? 'ID not found'}`);
+        
+          console.log('Deleting...');
+          await graphHelper.deleteMailAsync(messages[0].id)
+        
+
+    
+        
+  
+        // If @odata.nextLink is not undefined, there are more messages
+        // available on the server
+        const moreAvailable = messagePage['@odata.nextLink'] != undefined;
+        console.log(`\nMore messages available? ${moreAvailable}`);
+      } catch (err) {
+        console.log(`Error deleting mail: ${err}`);
+      }
   }
   
   async function sendMailAsync() {

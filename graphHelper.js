@@ -70,7 +70,7 @@ async function getUserTokenAsync() {
     }
   
     return _userClient.api('/me/mailFolders/inbox/messages')
-      .select(['from', 'isRead', 'receivedDateTime', 'subject'])
+      .select(['from', 'isRead', 'receivedDateTime', 'subject', 'body'])
       .top(25)
       .orderby('receivedDateTime DESC')
       .get();
@@ -78,10 +78,8 @@ async function getUserTokenAsync() {
   module.exports.getInboxAsync = getInboxAsync;
 
   async function sendMailAsync(subject, body, recipient) {
-    //recipient = 'kerstin.rampler@edu.fh-joanneum.at'
-    body = 'Hey Du :)'
-    subject = 'graph auth test'
-   // recipient = 'kerstin.rampler@edu.fh-joanneum.at'
+    body = 'Juhuuu!!! Es funktioniert :)'
+    subject = 'NEW graph auth test'
     console.log(`Subject: ${subject}`)
     console.log(`Body: ${body}`)
     console.log(`Recipient: ${recipient}`)
@@ -115,6 +113,13 @@ async function getUserTokenAsync() {
       });
   }
   module.exports.sendMailAsync = sendMailAsync;
+
+  async function deleteMailAsync(id) {
+    console.log(`Delete Email: id = ${id}`)
+    return _userClient.api(`/me/messages/${id}`)
+	.delete(); 
+  }
+  module.exports.deleteMailAsync = deleteMailAsync;
 
   // This function serves as a playground for testing Graph snippets
 // or other code
